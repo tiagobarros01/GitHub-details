@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Heading, Grid, Flex, Input, Box, Button } from '@chakra-ui/react';
 import { useRef } from 'react';
+import { useToast } from '../utils/useToast';
 
 export default function Home() {
   const userName = useRef<HTMLInputElement>(null);
@@ -10,7 +12,19 @@ export default function Home() {
     try {
       const res = await fetch(`https://api.github.com/users/${value}`);
       const data = await res.json();
+      const status = res.status;
 
+      if (status === 404) {
+        useToast({
+          type: 'error',
+          message: 'Invalid user name',
+          color: 'red',
+          background: 'white',
+          duration: 3000
+        });
+        return;
+      }
+      
       console.log(data);
     } catch (error) {
       console.debug(error);
@@ -56,7 +70,7 @@ export default function Home() {
             focusBorderColor="purple.500"
             borderTopRightRadius="none"
             borderBottomRightRadius="none"
-            placeholder="Name of user"
+            placeholder="User name here"
             ref={userName}
           />
           <Button
