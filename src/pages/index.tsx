@@ -1,53 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Heading, Grid, Flex, Input, Box, Button } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
-import dark from '../styles/themes/dark';
-import { useToast } from '../utils/useToast';
+import { useContext, useRef, useState } from 'react';
 import { Loader } from '../components/Loader';
-
-type User = {
-  avatar: string;
-  name: string;
-  userName: string;
-  followers?: number;
-  following?: number;
-  id: number;
-  location: string;
-  repos: number;
-}
+import { UserContext } from '../contexts/UserContext';
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<User>({} as User);
-  const userName = useRef<HTMLInputElement>(null);
-
-  async function getUserData() {
-    setIsLoading(true);
-    const value = userName.current?.value;
-
-    try {
-      const res = await fetch(`https://api.github.com/users/${value}`);
-      const data = await res.json();
-      const status = res.status;
-
-      if (status === 404) {
-        setIsLoading(false);
-        useToast({
-          type: 'error',
-          message: 'Invalid user name',
-          color: dark.colors.gray[600],
-          background: 'white',
-          duration: 3000,
-        });
-        return;
-      }
-      setIsLoading(false);
-      console.log(data);
-    } catch (error) {
-      setIsLoading(false);
-      console.debug(error);
-    }
-  }
+  const { getUserData, isLoading, userNameRef } = useContext(UserContext);
 
   return (
     <Grid
@@ -90,7 +48,7 @@ export default function Home() {
               borderTopRightRadius="none"
               borderBottomRightRadius="none"
               placeholder="User name here"
-              ref={userName}
+              ref={userNameRef}
             />
             <Button
               backgroundColor="purple.500"

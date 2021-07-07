@@ -1,14 +1,14 @@
 import type { AppProps } from 'next/app';
-import { ThemeProvider } from '../contexts/ThemeContext';
+import { ContextProvider } from '../contexts';
 
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider>
+    <ContextProvider>
       <Component {...pageProps} />
       <Toaster />
-    </ThemeProvider>
+    </ContextProvider>
   );
 }
 export default MyApp;
