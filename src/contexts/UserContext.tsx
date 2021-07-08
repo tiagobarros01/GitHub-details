@@ -7,8 +7,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { UserReposProps } from '../@types/UserReposProps';
 import dark from '../styles/themes/dark';
 import { useToast } from '../utils/useToast';
+import { Repository } from '../components/Repository';
 
 type UserProviderProps = {
   children: React.ReactNode;
@@ -23,14 +25,6 @@ type UserProps = {
   id: number;
   location: string;
   repos: number;
-};
-
-type UserReposProps = {
-  id: number;
-  description: string;
-  language: string;
-  name: string;
-  stargazers_count: number;
 };
 
 type UserContextData = {
@@ -117,12 +111,13 @@ function UserProvider({ children }: UserProviderProps) {
 
       setRepos(
         data.map((repo: UserReposProps) => (
-          <div key={repo.id}>
-            <p>{repo.name}</p>
-            <p>{repo.description}</p>
-            <p>{repo.language}</p>
-            <p>{repo.stargazers_count}</p>
-          </div>
+          <Repository
+            key={repo.id}
+            name={repo.name}
+            description={repo.description}
+            language={repo.language}
+            stargazers_count={repo.stargazers_count}
+          />
         ))
       );
       setIsLoading(false);
