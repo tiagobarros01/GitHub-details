@@ -6,16 +6,13 @@ export function UserDetails() {
 
   return (
     <Flex
+      width="35%"
       boxShadow="0 2px 12px rgba(0, 0, 0, 0.4)"
-      padding="15px"
-      justifyContent="space-between"
+      padding="15"
       alignItems="center"
       flexDirection="column"
-      // height="100%"
-      // overflowY="scroll"
-      // color="gray.100"
     >
-      <Flex alignItems="center">
+      <Flex width="100%" justifyContent="space-between" alignItems="center">
         <Box marginRight="50px">
           <Image
             boxSize="16"

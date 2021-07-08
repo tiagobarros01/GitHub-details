@@ -1,5 +1,16 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { UserReposProps } from '../@types/UserReposProps';
+import {
+  SiTypescript,
+  SiJavascript,
+  SiCss3,
+  SiJava,
+  SiC,
+  SiRuby,
+  SiCplusplus,
+  SiCsharp,
+  SiPython,
+} from 'react-icons/si';
 
 export function Repository(repo: UserReposProps) {
   return (
@@ -17,14 +28,32 @@ export function Repository(repo: UserReposProps) {
       </Text>
       <Text color="purple.400">
         Description:
-        <Text color="gray.200" >
-          {repo.description || 'No description'}
-        </Text>
+        <Text color="gray.200">{repo.description || 'No description'}</Text>
       </Text>
-      <Text display="flex" color="purple.400">
+      <Text display="flex" alignItems="center" color="purple.400">
         Languages:
-        <Text color="gray.200" marginLeft="2.5">
-          {repo.language}
+        <Text marginLeft="2" color="gray.200">
+          {repo.language === 'TypeScript' ? (
+            <SiTypescript color="#007bcd" />
+          ) : repo.language === 'JavaScript' ? (
+            <SiJavascript color="#f0dc4e" />
+          ) : repo.language === 'CSS' ? (
+            <SiCss3 color="#3bb2e0" />
+          ) : repo.language === 'C' ? (
+            <SiC />
+          ) : repo.language === 'Ruby' ? (
+            <SiRuby color="#ea3925" />
+          ) : repo.language === 'Java' ? (
+            <SiJava />
+          ) : repo.language === 'C++' ? (
+            <SiCplusplus />
+          ) : repo.language === 'C#' ? (
+            <SiCsharp />
+          ) : repo.language === 'Python' ? (
+            <SiPython color="#f2dd6f" />
+          ) : (
+            ''
+          )}
         </Text>
       </Text>
       <Text display="flex" color="purple.400">

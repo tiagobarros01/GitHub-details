@@ -29,11 +29,12 @@ export default function User() {
           <UserDetails />
           {repoVisible && (
             <Flex
-            color="gray.100"
             flexDirection="column"
             maxHeight="300px"
             maxWidth="40%"
+            marginTop="5"
             overflowY="scroll"
+            color="gray.100"
             borderRadius="md"
           >
             {repos}
