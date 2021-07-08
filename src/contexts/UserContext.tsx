@@ -25,9 +25,19 @@ type UserProps = {
   repos: number;
 };
 
+type UserReposProps = {
+  id: number;
+  description: string;
+  language: string;
+  name: string;
+  stargazers_count: number;
+};
+
 type UserContextData = {
   userData: UserProps;
-  getUserData: (user: string) => Promise<boolean | undefined>;
+  repos: UserReposProps;
+  getUserData: (userName: string) => Promise<boolean | undefined>;
+  getUserRepos: (userName: string) => Promise<void>;
   redirectToUserPage: () => void;
   isLoading: boolean;
   userNameRef: React.RefObject<HTMLInputElement>;
@@ -39,6 +49,7 @@ function UserProvider({ children }: UserProviderProps) {
   const route = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserProps>({} as UserProps);
+  const [repos, setRepos] = useState<UserReposProps>({} as UserReposProps);
   const userNameRef = useRef<HTMLInputElement>(null);
 
   const redirectToUserPage = useCallback(() => {
@@ -95,15 +106,46 @@ function UserProvider({ children }: UserProviderProps) {
     [route]
   );
 
+  const getUserRepos = useCallback(async (userName: string) => {
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(
+        `https://api.github.com/users/${userName}/repos`
+      );
+      const data = await response.json();
+
+      setRepos(
+        data.map((repo: UserReposProps) => {
+          console.log(repo.stargazers_count);
+          return (
+            <div key={repo.id}>
+              <p>{repo.name}</p>
+              <p>{repo.description}</p>
+              <p>{repo.language}</p>
+              <p>{repo.stargazers_count}</p>
+            </div>
+          );
+        })
+      );
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }, []);
+
   const memoizedValue = useMemo(
     () => ({
       userData,
+      repos,
       getUserData,
+      getUserRepos,
       redirectToUserPage,
       isLoading,
       userNameRef,
     }),
-    [userData, getUserData, redirectToUserPage, isLoading]
+    [userData, repos, getUserData, getUserRepos, redirectToUserPage, isLoading]
   );
 
   return (

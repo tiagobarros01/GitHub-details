@@ -1,12 +1,4 @@
-import {
-  Heading,
-  Grid,
-  Flex,
-  Box,
-  Button,
-  Image,
-  Text,
-} from '@chakra-ui/react';
+import { Heading, Grid, Flex, Box, Image, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import { Loader } from '../../components/Loader';
@@ -16,7 +8,8 @@ export default function User() {
   const {
     query: { user },
   } = useRouter();
-  const { isLoading, getUserData, userData } = useContext(UserContext);
+  const { isLoading, getUserData, userData, getUserRepos, repos } =
+    useContext(UserContext);
 
   useEffect(() => {
     getUserData(String(user));
@@ -43,9 +36,12 @@ export default function User() {
         <Flex
           gridArea="box"
           boxShadow="0 2px 12px rgba(0, 0, 0, 0.4)"
-          height="100%"
           padding="15px"
           justifyContent="space-between"
+          alignItems="center"
+          height="100%"
+          overflowY="scroll"
+          color="gray.100"
         >
           <Box>
             <Image
@@ -63,7 +59,12 @@ export default function User() {
           </Box>
           <Box>
             <Flex>
-              <Text color="gray.400" marginRight="5px" cursor="pointer">
+              <Text
+                onClick={() => getUserRepos(String(user))}
+                color="gray.400"
+                marginRight="5px"
+                cursor="pointer"
+              >
                 {userData.repos}
               </Text>
               <Text color="gray.300" fontSize="md">
@@ -87,6 +88,7 @@ export default function User() {
               </Text>
             </Flex>
           </Box>
+          {repos}
         </Flex>
       )}
     </Grid>
