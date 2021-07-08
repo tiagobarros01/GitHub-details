@@ -1,28 +1,25 @@
-import { Flex } from '@chakra-ui/react';
+import { Center, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Loader } from '../../components/Loader';
-import { UserRepos } from '../../components/UserRepos';
 import { UserDetails } from '../../components/UserDetails';
-import { UserContext } from '../../contexts/UserContext';
+import { useUser } from '../../hooks/useUser';
 
 export default function User() {
   const {
     query: { user },
   } = useRouter();
-  const { isLoading, getUserData, repoVisible } = useContext(UserContext);
+  const { isLoading, getUserData, repoVisible, repos } = useUser();
 
   useEffect(() => {
     getUserData(String(user));
   }, [getUserData, user]);
 
   return (
-    <Flex
+    <Center
       as="main"
       height="100vh"
       backgroundColor="gray.800"
-      justifyContent="center"
-      alignItems="center"
       flexDirection="column"
     >
       {isLoading ? (
@@ -30,9 +27,20 @@ export default function User() {
       ) : (
         <>
           <UserDetails />
-          {repoVisible && <UserRepos />}
+          {repoVisible && (
+            <Flex
+            color="gray.100"
+            flexDirection="column"
+            maxHeight="300px"
+            maxWidth="40%"
+            overflowY="scroll"
+            borderRadius="md"
+          >
+            {repos}
+          </Flex>
+          )}
         </>
       )}
-    </Flex>
+    </Center>
   );
 }
