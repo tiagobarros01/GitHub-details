@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Heading, Grid, Flex, Input, Box, Button } from '@chakra-ui/react';
-import { useContext, useRef, useState } from 'react';
+import { useContext } from 'react';
 import { Loader } from '../components/Loader';
 import { UserContext } from '../contexts/UserContext';
 
 export default function Home() {
-  const { getUserData, isLoading, userNameRef } = useContext(UserContext);
+  const { userNameRef, redirectToUserPage } = useContext(UserContext);
 
   return (
     <Grid
@@ -33,42 +33,31 @@ export default function Home() {
         <Heading size="lg" color="gray.300">
           GitHub Details
         </Heading>
-        {!isLoading ? (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexDirection="row"
-            marginTop="15px"
-          >
-            <Input
-              color="gray.300"
-              backgroundColor="gray.800"
-              focusBorderColor="purple.500"
-              borderTopRightRadius="none"
-              borderBottomRightRadius="none"
-              placeholder="User name here"
-              ref={userNameRef}
-            />
-            <Button
-              backgroundColor="purple.500"
-              borderRadius="none"
-              _hover={{ backgroundColor: 'purple.600' }}
-              onClick={getUserData}
-            >
-              Search
-            </Button>
-          </Box>
-        ) : (
-          <Loader
-            marginTop="15px"
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.300"
-            color="purple.500"
-            size="lg"
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="row"
+          marginTop="15px"
+        >
+          <Input
+            color="gray.300"
+            backgroundColor="gray.800"
+            focusBorderColor="purple.500"
+            borderTopRightRadius="none"
+            borderBottomRightRadius="none"
+            placeholder="User name here"
+            ref={userNameRef}
           />
-        )}
+          <Button
+            backgroundColor="purple.500"
+            borderRadius="none"
+            _hover={{ backgroundColor: 'purple.600' }}
+            onClick={redirectToUserPage}
+          >
+            Search
+          </Button>
+        </Box>
       </Flex>
     </Grid>
   );

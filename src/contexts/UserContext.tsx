@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useRouter } from 'next/router';
 import React, {
   createContext,
   useCallback,
@@ -26,7 +27,8 @@ type UserProps = {
 
 type UserContextData = {
   user: UserProps;
-  getUserData: () => Promise<void>;
+  getUserData: (user: string) => Promise<boolean | undefined>;
+  redirectToUserPage: () => void;
   isLoading: boolean;
   userNameRef: React.RefObject<HTMLInputElement>;
 };
@@ -34,14 +36,14 @@ type UserContextData = {
 const UserContext = createContext<UserContextData>({} as UserContextData);
 
 function UserProvider({ children }: UserProviderProps) {
+  const route = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<UserProps>({} as UserProps);
   const userNameRef = useRef<HTMLInputElement>(null);
 
-  const getUserData = useCallback(async () => {
+  const redirectToUserPage = useCallback(() => {
     const value = userNameRef.current?.value;
-
-    if (value === '') {
+    if (!value || value === '') {
       useToast({
         type: 'error',
         message: 'No empty field',
@@ -49,13 +51,16 @@ function UserProvider({ children }: UserProviderProps) {
         background: 'white',
         duration: 3000,
       });
-      return;
+      return route.push('/');
     }
+    route.push(`/users/${value}`);
+  }, [route]);
 
+  const getUserData = useCallback(async (user: string) => {
     setIsLoading(true);
-    
+
     try {
-      const res = await fetch(`https://api.github.com/users/${value}`);
+      const res = await fetch(`https://api.github.com/users/${user}`);
       const data = await res.json();
       const status = res.status;
 
@@ -68,7 +73,7 @@ function UserProvider({ children }: UserProviderProps) {
           background: 'white',
           duration: 3000,
         });
-        return;
+        return route.push('/');
       }
       setIsLoading(false);
       console.log(data);
@@ -76,17 +81,18 @@ function UserProvider({ children }: UserProviderProps) {
       setIsLoading(false);
       console.debug(error);
     }
-  }, []);
+  }, [route]);
 
   const memoizedValue = useMemo(() => {
     const value: UserContextData = {
       user,
       getUserData,
+      redirectToUserPage,
       isLoading,
       userNameRef,
     };
     return value;
-  }, [user, getUserData, isLoading]);
+  }, [user, getUserData, redirectToUserPage, isLoading]);
 
   return (
     <UserContext.Provider value={memoizedValue}>
