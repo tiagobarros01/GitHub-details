@@ -27,18 +27,30 @@ export default function User() {
       ) : (
         <>
           <UserDetails />
-          {repoVisible && (
+          {repos === null && repoVisible ? (
             <Flex
-            flexDirection="column"
-            maxHeight="300px"
-            maxWidth="40%"
-            marginTop="5"
-            overflowY="scroll"
-            color="gray.100"
-            borderRadius="md"
-          >
-            {repos}
-          </Flex>
+              flexDirection="column"
+              maxHeight="300px"
+              maxWidth="40%"
+              marginTop="5"
+              color="gray.100"
+            >
+              <Loader />
+            </Flex>
+          ) : repos !== null ? (
+            <Flex
+              flexDirection="column"
+              maxHeight="300px"
+              maxWidth="40%"
+              marginTop="5"
+              overflowY="scroll"
+              color="gray.100"
+              borderRadius="md"
+            >
+              {repos}
+            </Flex>
+          ) : (
+            ''
           )}
         </>
       )}

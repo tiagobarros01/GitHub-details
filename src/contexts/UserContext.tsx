@@ -29,7 +29,7 @@ type UserProps = {
 
 type UserContextData = {
   userData: UserProps;
-  repos: UserReposProps;
+  repos: UserReposProps | null;
   getUserData: (userName: string) => Promise<boolean | undefined>;
   getUserRepos: (userName: string) => Promise<void>;
   redirectToUserPage: () => void;
@@ -45,9 +45,10 @@ function UserProvider({ children }: UserProviderProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [repoVisible, setRepoVisible] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserProps>({} as UserProps);
-  const [repos, setRepos] = useState<UserReposProps>({} as UserReposProps);
+  const [repos, setRepos] = useState<UserReposProps | null>(null);
   const userNameRef = useRef<HTMLInputElement>(null);
 
+  
   const redirectToUserPage = useCallback(() => {
     const value = userNameRef.current?.value;
     if (!value || value === '') {
@@ -95,6 +96,7 @@ function UserProvider({ children }: UserProviderProps) {
           following: data.following,
         });
         setIsLoading(false);
+        setRepoVisible(false);
       } catch (error) {
         setIsLoading(false);
         console.debug(error);
@@ -104,6 +106,7 @@ function UserProvider({ children }: UserProviderProps) {
   );
 
   const getUserRepos = useCallback(async (userName: string) => {
+    setRepoVisible(true);
     try {
       const response = await fetch(
         `https://api.github.com/users/${userName}/repos`
@@ -121,7 +124,6 @@ function UserProvider({ children }: UserProviderProps) {
           />
         ))
       );
-      setRepoVisible(true);
     } catch (error) {
       setRepoVisible(false);
       console.log(error);
