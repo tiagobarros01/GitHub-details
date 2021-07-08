@@ -26,7 +26,7 @@ type UserProps = {
 };
 
 type UserContextData = {
-  user: UserProps;
+  userData: UserProps;
   getUserData: (user: string) => Promise<boolean | undefined>;
   redirectToUserPage: () => void;
   isLoading: boolean;
@@ -38,7 +38,7 @@ const UserContext = createContext<UserContextData>({} as UserContextData);
 function UserProvider({ children }: UserProviderProps) {
   const route = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<UserProps>({} as UserProps);
+  const [userData, setUserData] = useState<UserProps>({} as UserProps);
   const userNameRef = useRef<HTMLInputElement>(null);
 
   const redirectToUserPage = useCallback(() => {
@@ -56,43 +56,55 @@ function UserProvider({ children }: UserProviderProps) {
     route.push(`/users/${value}`);
   }, [route]);
 
-  const getUserData = useCallback(async (user: string) => {
-    setIsLoading(true);
+  const getUserData = useCallback(
+    async (userName: string) => {
+      setIsLoading(true);
 
-    try {
-      const res = await fetch(`https://api.github.com/users/${user}`);
-      const data = await res.json();
-      const status = res.status;
+      try {
+        const res = await fetch(`https://api.github.com/users/${userName}`);
+        const data = await res.json();
+        const status = res.status;
 
-      if (status === 404) {
-        setIsLoading(false);
-        useToast({
-          type: 'error',
-          message: 'Invalid user name',
-          color: dark.colors.gray[600],
-          background: 'white',
-          duration: 3000,
+        if (status === 404) {
+          setIsLoading(false);
+          useToast({
+            type: 'error',
+            message: 'Invalid user name',
+            color: dark.colors.gray[600],
+            background: 'white',
+            duration: 3000,
+          });
+          return route.push('/');
+        }
+        setUserData({
+          avatar: data.avatar_url,
+          id: data.id,
+          location: data.location,
+          name: data.name,
+          repos: data.public_repos,
+          userName: data.login,
+          followers: data.followers,
+          following: data.following,
         });
-        return route.push('/');
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.debug(error);
       }
-      setIsLoading(false);
-      console.log(data);
-    } catch (error) {
-      setIsLoading(false);
-      console.debug(error);
-    }
-  }, [route]);
+    },
+    [route]
+  );
 
-  const memoizedValue = useMemo(() => {
-    const value: UserContextData = {
-      user,
+  const memoizedValue = useMemo(
+    () => ({
+      userData,
       getUserData,
       redirectToUserPage,
       isLoading,
       userNameRef,
-    };
-    return value;
-  }, [user, getUserData, redirectToUserPage, isLoading]);
+    }),
+    [userData, getUserData, redirectToUserPage, isLoading]
+  );
 
   return (
     <UserContext.Provider value={memoizedValue}>

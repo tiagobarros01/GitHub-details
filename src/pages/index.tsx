@@ -1,7 +1,5 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { Heading, Grid, Flex, Input, Box, Button } from '@chakra-ui/react';
 import { useContext } from 'react';
-import { Loader } from '../components/Loader';
 import { UserContext } from '../contexts/UserContext';
 
 export default function Home() {
