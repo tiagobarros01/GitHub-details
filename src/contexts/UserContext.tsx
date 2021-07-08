@@ -34,6 +34,7 @@ type UserContextData = {
   getUserRepos: (userName: string) => Promise<void>;
   redirectToUserPage: () => void;
   isLoading: boolean;
+  repoVisible: boolean;
   userNameRef: React.RefObject<HTMLInputElement>;
 };
 
@@ -42,6 +43,7 @@ const UserContext = createContext<UserContextData>({} as UserContextData);
 function UserProvider({ children }: UserProviderProps) {
   const route = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [repoVisible, setRepoVisible] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserProps>({} as UserProps);
   const [repos, setRepos] = useState<UserReposProps>({} as UserReposProps);
   const userNameRef = useRef<HTMLInputElement>(null);
@@ -64,6 +66,7 @@ function UserProvider({ children }: UserProviderProps) {
   const getUserData = useCallback(
     async (userName: string) => {
       setIsLoading(true);
+      setRepoVisible(false);
 
       try {
         const res = await fetch(`https://api.github.com/users/${userName}`);
@@ -101,8 +104,6 @@ function UserProvider({ children }: UserProviderProps) {
   );
 
   const getUserRepos = useCallback(async (userName: string) => {
-    setIsLoading(true);
-
     try {
       const response = await fetch(
         `https://api.github.com/users/${userName}/repos`
@@ -120,10 +121,10 @@ function UserProvider({ children }: UserProviderProps) {
           />
         ))
       );
-      setIsLoading(false);
+      setRepoVisible(true);
     } catch (error) {
+      setRepoVisible(false);
       console.log(error);
-      setIsLoading(false);
     }
   }, []);
 
@@ -135,9 +136,18 @@ function UserProvider({ children }: UserProviderProps) {
       getUserRepos,
       redirectToUserPage,
       isLoading,
+      repoVisible,
       userNameRef,
     }),
-    [userData, repos, getUserData, getUserRepos, redirectToUserPage, isLoading]
+    [
+      userData,
+      repos,
+      getUserData,
+      getUserRepos,
+      redirectToUserPage,
+      isLoading,
+      repoVisible,
+    ]
   );
 
   return (

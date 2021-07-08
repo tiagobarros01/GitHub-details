@@ -1,14 +1,16 @@
 import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Loader } from '../../components/Loader';
 import { UserRepos } from '../../components/UserRepos';
 import { UserDetails } from '../../components/UserDetails';
 import { UserContext } from '../../contexts/UserContext';
 
 export default function User() {
-  const { query: { user } } = useRouter();
-  const { isLoading, getUserData } = useContext(UserContext);
+  const {
+    query: { user },
+  } = useRouter();
+  const { isLoading, getUserData, repoVisible } = useContext(UserContext);
 
   useEffect(() => {
     getUserData(String(user));
@@ -27,7 +29,8 @@ export default function User() {
         <Loader />
       ) : (
         <>
-          <UserDetails /> <UserRepos />
+          <UserDetails />
+          {repoVisible && <UserRepos />}
         </>
       )}
     </Flex>
