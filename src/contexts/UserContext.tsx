@@ -116,17 +116,14 @@ function UserProvider({ children }: UserProviderProps) {
       const data = await response.json();
 
       setRepos(
-        data.map((repo: UserReposProps) => {
-          console.log(repo.stargazers_count);
-          return (
-            <div key={repo.id}>
-              <p>{repo.name}</p>
-              <p>{repo.description}</p>
-              <p>{repo.language}</p>
-              <p>{repo.stargazers_count}</p>
-            </div>
-          );
-        })
+        data.map((repo: UserReposProps) => (
+          <div key={repo.id}>
+            <p>{repo.name}</p>
+            <p>{repo.description}</p>
+            <p>{repo.language}</p>
+            <p>{repo.stargazers_count}</p>
+          </div>
+        ))
       );
       setIsLoading(false);
     } catch (error) {
