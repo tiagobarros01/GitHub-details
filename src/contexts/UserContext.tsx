@@ -35,6 +35,7 @@ type UserContextData = {
   redirectToUserPage: () => void;
   isLoading: boolean;
   repoVisible: boolean;
+  setRepoVisible: React.Dispatch<React.SetStateAction<boolean>>;
   userNameRef: React.RefObject<HTMLInputElement>;
 };
 
@@ -61,6 +62,8 @@ function UserProvider({ children }: UserProviderProps) {
       });
       return route.push('/');
     }
+    setRepos(null)
+    setRepoVisible(false)
     route.push(`/users/${value}`);
   }, [route]);
 
@@ -139,6 +142,7 @@ function UserProvider({ children }: UserProviderProps) {
       redirectToUserPage,
       isLoading,
       repoVisible,
+      setRepoVisible,
       userNameRef,
     }),
     [
@@ -149,6 +153,7 @@ function UserProvider({ children }: UserProviderProps) {
       redirectToUserPage,
       isLoading,
       repoVisible,
+      setRepoVisible
     ]
   );
 

@@ -20,17 +20,17 @@ export function Repository(repo: UserReposProps) {
       padding="2"
       borderRadius="md"
     >
-      <Text display="flex" color="purple.400">
+      <Text display="flex" color="gray.200">
         Name:
-        <Text color="gray.200" marginLeft="2.5">
+        <Text color="purple.400" marginLeft="2.5">
           {repo.name}
         </Text>
       </Text>
-      <Text color="purple.400">
+      <Text color="gray.200">
         Description:
-        <Text color="gray.200">{repo.description || 'No description'}</Text>
+        <Text color="purple.400">{repo.description || 'No description'}</Text>
       </Text>
-      <Text display="flex" alignItems="center" color="purple.400">
+      <Text display="flex" alignItems="center" color="gray.200">
         Languages:
         <Text marginLeft="2" color="gray.200">
           {repo.language === 'TypeScript' ? (
@@ -56,9 +56,9 @@ export function Repository(repo: UserReposProps) {
           )}
         </Text>
       </Text>
-      <Text display="flex" color="purple.400">
+      <Text display="flex" color="gray.200">
         Stars:
-        <Text color="gray.200" marginLeft="2.5">
+        <Text color="purple.400" marginLeft="2.5">
           {repo.stargazers_count}
         </Text>
       </Text>
