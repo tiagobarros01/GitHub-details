@@ -1,5 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import router from 'next/router';
 
 export function BackTo() {
   return (
@@ -16,6 +17,7 @@ export function BackTo() {
       cursor="pointer"
       _hover={{ backgroundColor: "purple.600" }}
       transition="background 200ms"
+      onClick={() => router.back()}
     >
       <ArrowBackIcon color="white" w={6} h={6} />
     </Flex>
