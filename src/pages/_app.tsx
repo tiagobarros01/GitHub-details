@@ -8,8 +8,6 @@ import { useRouter } from 'next/router';
 function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
 
-  console.log(pathname);
-
   return (
     <ContextProvider>
       {pathname !== '/' && <BackTo />}
