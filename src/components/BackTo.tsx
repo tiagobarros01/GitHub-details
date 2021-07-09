@@ -15,7 +15,7 @@ export function BackTo() {
       alignItems="center"
       borderRadius="xl"
       cursor="pointer"
-      _hover={{ backgroundColor: "purple.600" }}
+      _hover={{ backgroundColor: 'purple.600' }}
       transition="background 200ms"
       onClick={() => router.back()}
     >

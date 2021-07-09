@@ -49,7 +49,6 @@ function UserProvider({ children }: UserProviderProps) {
   const [repos, setRepos] = useState<UserReposProps | null>(null);
   const userNameRef = useRef<HTMLInputElement>(null);
 
-  
   const redirectToUserPage = useCallback(() => {
     const value = userNameRef.current?.value;
     if (!value || value === '') {

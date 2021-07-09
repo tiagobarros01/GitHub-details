@@ -1,3 +1,3 @@
-import { Spinner, SpinnerProps } from '@chakra-ui/react'
+import { Spinner, SpinnerProps } from '@chakra-ui/react';
 
-export const Loader = ({...rest} : SpinnerProps) => <Spinner {...rest} />
+export const Loader = ({ ...rest }: SpinnerProps) => <Spinner {...rest} />;

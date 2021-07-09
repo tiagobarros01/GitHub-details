@@ -1,9 +1,8 @@
 import { Heading, Grid, Flex, Input, Box, Button } from '@chakra-ui/react';
-import { useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+import { useUser } from '../hooks/useUser';
 
 export default function Home() {
-  const { userNameRef, redirectToUserPage } = useContext(UserContext);
+  const { userNameRef, redirectToUserPage } = useUser();
 
   return (
     <Grid

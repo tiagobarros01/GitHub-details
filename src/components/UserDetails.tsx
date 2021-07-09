@@ -4,8 +4,6 @@ import { useUser } from '../hooks/useUser';
 export function UserDetails() {
   const { userData, getUserRepos, repoVisible } = useUser();
 
-  console.log(repoVisible)
-
   return (
     <Flex
       width="35%"

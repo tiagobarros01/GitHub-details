@@ -4,7 +4,7 @@ import React from 'react';
 
 type Props = {
   children: React.ReactNode;
-}
+};
 
 export function ContextProvider({ children }: Props) {
   return (

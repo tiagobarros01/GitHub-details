@@ -4,7 +4,7 @@ import dark from '../styles/themes/dark';
 
 type Props = {
   children: React.ReactNode;
-}
+};
 
 export const ThemeProvider = ({ children }: Props) => (
   <ChakraProvider theme={dark}>
