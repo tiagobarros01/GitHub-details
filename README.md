@@ -1,7 +1,5 @@
 <h1 align="center">
   <br>
-  <!-- <img src="./public/favicon.ico"/> -->
-  <br>
   GitHub Details
  </h1>
  
