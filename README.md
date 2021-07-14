@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  GitHub Details
+  GitHub Details 🔎👨‍💻
  </h1>
  
 <p align="center">An app to search user, repos and more on GitHub!</p>
